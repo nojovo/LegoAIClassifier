@@ -11,8 +11,6 @@ cap = cam.capture()
 lower_color = np.array([0, 0, 0])
 upper_color = np.array([200, 200, 200])
 
-logging.debug("Frame: ", cam.get_frame(cap))
-
 while True:
     frame = cam.get_frame(cap)
 
