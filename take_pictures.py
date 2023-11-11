@@ -1,22 +1,16 @@
 import numpy as np
 import cv2 as cv
+import cam
 
 
-cap = cv.VideoCapture(0)
+cap = cam.capture()
 
 lower_color = np.array([0, 0, 0])
 upper_color = np.array([200, 200, 200])
 
 
-if not cap.isOpened():
-    print("Cannot open camera")
-    exit()
-
 while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("Can't receive frame (stream end?). Exiting ...")
-        break
+    frame = cam.get_frame(cap)
 
     rgb_frame = cv.cvtColor(frame, cv.COLOR_RGBA2RGB)
     mask = cv.inRange(rgb_frame, lower_color, upper_color)
