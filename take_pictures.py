@@ -1,13 +1,17 @@
+import logging
 import numpy as np
 import cv2 as cv
 import cam
 
+logging.basicConfig(level=logging.DEBUG)
+logging.debug("Current os: " + cam.os_type)
 
 cap = cam.capture()
 
 lower_color = np.array([0, 0, 0])
 upper_color = np.array([200, 200, 200])
 
+logging.debug("Frame: ", cam.get_frame(cap))
 
 while True:
     frame = cam.get_frame(cap)

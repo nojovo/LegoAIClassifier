@@ -6,5 +6,5 @@ def capture():
     return capturer
 
 def get_frame(capture):
-    frame = capture.capture_array
+    frame = capture.capture_array()
     return frame
