@@ -23,11 +23,7 @@ while True:
     (numLabels, labels, stats, centroids) = output
 
     for i in range(0, numLabels):
-        if i == 0:
-            logging.info("Current component: " + str(i + 1) + "/" + str(numLabels))
-
-        else:
-            logging.info("Current component: " + str(i + 1) + "/" + str(numLabels))
+        logging.info("Current component: " + str(i + 1) + "/" + str(numLabels))
 
         x = stats[i, cv.CC_STAT_LEFT]
         y = stats[i, cv.CC_STAT_TOP]
