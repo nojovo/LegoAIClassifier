@@ -1,12 +1,13 @@
 import logging
+import numpy as np
 import cv2 as cv
 import cam
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Current os: " + cam.os_type)
 
-lower_color = 0
-upper_color = 5
+lower_color = 250
+upper_color = 255
 connectivity = 4
 
 cap = cam.capture()
@@ -14,31 +15,37 @@ cap = cam.capture()
 
 while True:
     frame = cam.get_frame(cap)
-
     gray_frame = cv.cvtColor(frame, cv.COLOR_RGB2GRAY)
-    thresh = cv.threshold(gray_frame, 0, 255, cv.THRESH_BINARY_INV | cv.THRESH_OTSU)[1]
-    # mask = cv.inRange(gray_frame, lower_color, upper_color)
-    # masked_image = cv.bitwise_and(frame, frame, mask=mask)
-    output = cv.connectedComponentsWithStats(thresh, connectivity, cv.CV_32S)
-    (numLabels, labels, stats, centroids) = output
 
-    for i in range(0, numLabels):
-        logging.info("Current component: " + str(i + 1) + "/" + str(numLabels))
+    mask = cv.inRange(gray_frame, lower_color, upper_color)
 
-        x = stats[i, cv.CC_STAT_LEFT]
-        y = stats[i, cv.CC_STAT_TOP]
-        w = stats[i, cv.CC_STAT_WIDTH]
-        h = stats[i, cv.CC_STAT_HEIGHT]
-        area = stats[i, cv.CC_STAT_AREA]
-        (cX, cY) = centroids[i]
+    # remove noise from mask
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
 
-        output = frame.copy()
-        cv.rectangle(output, (x, y), (x + w, y + h), (0, 255, 0), 3)
-        cv.circle(output, (int(cX), int(cY)), 4, (0, 0, 255), -1)
+    masked_image = cv.bitwise_and(frame, frame, mask=mask)
 
-        cv.imshow("raw_image", frame)
-        cv.imshow("grey_image", gray_frame)
-        cv.imshow("thresh", thresh)
+    # find contours
+    contours, hierarchy = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contour_im = gray_frame
+    contour_im = cv.drawContours(contour_im, contours, -1, (0, 255, 0), 3)
+
+    # draw contours and crop image
+    if len(contours) > 0:
+        contour = contours[0]
+        x, y, w, h = cv.boundingRect(contour)
+        rect_im = gray_frame
+        rect_im = cv.rectangle(rect_im, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        crop_img = gray_frame[y:y + h, x:x + w]
+
+    # cv.imshow("raw_image", frame)
+    cv.imshow("grey_image", gray_frame)
+    cv.imshow("mask", mask)
+    # cv.imshow("masked_image", masked_image)
+    cv.imshow("contour_im", contour_im)
+    cv.imshow("rect_im", rect_im)
+    cv.imshow("crop_img", crop_img)
 
     if cv.waitKey(1) == ord('q'):
         break
