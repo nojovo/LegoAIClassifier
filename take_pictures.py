@@ -46,12 +46,23 @@ while True:
     if len(contours) > 0:
         contour = contours[0]
         x, y, w, h = cv.boundingRect(contour)
-        center = (x + (w / 2), y + (h / 2))
+        center = (x + w / 2, y + h / 2)
         center_x, center_y = center
         w += edge_size * 2
         h += edge_size * 2
-        new_x = round(center_x - (w / 2))
-        new_y = round(center_y - (h / 2))
+        new_x = round(center_x - w / 2)
+        new_y = round(center_y - h / 2)
+
+        # check if picture extract with edge can be cropped
+        picture_height, picture_width = gray_frame.shape
+        if new_x < 0:
+            new_x = 0
+        if new_y < 0:
+            new_y = 0
+        if new_x + w > picture_width:
+            w = picture_width - new_x
+        if new_y + h > picture_height:
+            w = picture_width - new_x
 
         rect_im = gray_frame.copy()
         rect_im = cv.rectangle(rect_im, (new_x, new_y), (new_x + w, new_y + h), (0, 255, 0), 2)
