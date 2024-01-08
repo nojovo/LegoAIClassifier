@@ -11,7 +11,7 @@ upper_color = 240
 noise_size = 5
 edge_size = 5
 
-final_picture_size = 50
+final_picture_size = 100
 
 cap = cam.capture()
 
@@ -48,12 +48,20 @@ while True:
         x, y, w, h = cv.boundingRect(contour)
         center = (x + w / 2, y + h / 2)
         center_x, center_y = center
+
+        # convert picture to square by choosing the longer side as sie length
+        if w > h:
+            h = w
+        elif h > w:
+            w = h
+
+        # calculate new width, height and top left corner x and y
         w += edge_size * 2
         h += edge_size * 2
         new_x = round(center_x - w / 2)
         new_y = round(center_y - h / 2)
 
-        # check if picture extract with edge can be cropped
+        # check if picture extract with edge can be cropped else make it croppable
         picture_height, picture_width = gray_frame.shape
         if new_x < 0:
             new_x = 0
