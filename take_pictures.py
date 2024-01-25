@@ -16,12 +16,8 @@ final_picture_size = 100
 cap = cam.capture()
 
 
-while True:
-    # frame = cam.get_frame(cap)
-    frame = cv.imread("test_image.png")
-    # cv.imshow("raw_image", frame)
-
-    gray_frame = cv.cvtColor(frame, cv.COLOR_RGB2GRAY)
+def edit_picture(raw_picture):
+    gray_frame = cv.cvtColor(raw_picture, cv.COLOR_RGB2GRAY)
     cv.imshow("grey_image", gray_frame)
 
     mask = cv.inRange(gray_frame, lower_color, upper_color)
@@ -85,13 +81,24 @@ while True:
         resized_image = cv.resize(cropped_image, new_image_dimensions)
         cv.imshow("resized", resized_image)
 
+        return resized_image
+
+    else:
+        return False
+
+
+while True:
+    # frame = cam.get_frame(cap)
+    frame = cv.imread("test_image.png")
+    # cv.imshow("raw_image", frame)
+
+    # check if picture is empty else save it
+    if (new_picture := edit_picture(frame)).any():
         # save image
-        cv.imwrite("old_image.png", cropped_image)
-        cv.imwrite("new_image.png", resized_image)
+        cv.imwrite("new_image.png", new_picture)
 
     if cv.waitKey(1) == ord('q'):
         break
 
 cap.release()
 cv.destroyAllWindows()
-
