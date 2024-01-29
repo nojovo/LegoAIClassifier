@@ -14,8 +14,8 @@ part_number = parts[0]
 current_id = 1
 number_of_pictures = 10
 time_between_pictures = 0.01  # in seconds
-save_raw_pictures = True
-save_processed_pictures = True
+save_raw_pictures = False
+save_processed_pictures = False
 
 lower_color = 0
 upper_color = 240
@@ -39,7 +39,7 @@ def edit_picture(raw_picture):
     cv.imshow("grey_image", gray_frame)
 
     mask = cv.inRange(gray_frame, lower_color, upper_color)
-    cv.imshow("mask", mask)
+    # cv.imshow("mask", mask)
 
     # remove noise from mask
     kernel = np.ones((noise_size, noise_size), np.uint8)
@@ -54,7 +54,7 @@ def edit_picture(raw_picture):
     contours, hierarchy = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     contour_image = gray_frame.copy()
     contour_image = cv.drawContours(contour_image, contours, -1, (0, 255, 0), 3)
-    cv.imshow("contour", contour_image)
+    # cv.imshow("contour", contour_image)
 
     # draw contours and crop image
     if len(contours) > 0:
@@ -63,7 +63,7 @@ def edit_picture(raw_picture):
         center = (x + w / 2, y + h / 2)
         center_x, center_y = center
 
-        # convert picture to square by choosing the longer side as sie length
+        # convert picture to square by choosing the longer side as side length
         if w > h:
             h = w
         elif h > w:
@@ -92,7 +92,7 @@ def edit_picture(raw_picture):
         cropped_image = gray_frame[new_y:new_y + h, new_x:new_x + w]
 
         cv.imshow("rectangle", rectangle_image)
-        cv.imshow("cropped", cropped_image)
+        # cv.imshow("cropped", cropped_image)
 
         # resize image
         new_image_dimensions = (final_picture_size, final_picture_size)
@@ -102,7 +102,8 @@ def edit_picture(raw_picture):
         return resized_image
 
     else:
-        return False
+        # return empty array if no part was found
+        return []
 
 
 while True:
