@@ -18,7 +18,7 @@ save_raw_pictures = False
 save_processed_pictures = False
 
 lower_color = 0
-upper_color = 240
+upper_color = 180
 noise_size = 5
 edge_size = 5
 
@@ -103,7 +103,7 @@ def edit_picture(raw_picture):
 
     else:
         # return empty array if no part was found
-        return []
+        return np.array([])
 
 
 while True:
