@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 /models/mnist_model_1.keras
 /logs/
+/pictures/

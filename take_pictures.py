@@ -1,10 +1,21 @@
 import logging
+import time
+from pathlib import Path
 import numpy as np
 import cv2 as cv
 import cam
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug("Current os: " + cam.os_type)
+
+parts = ["32316", "32524", "32140", "32526", "64179", "32270", "32269", "2780", "32556", "32073"]
+
+part_number = parts[0]
+current_id = 1
+number_of_pictures = 10
+time_between_pictures = 0.01  # in seconds
+save_raw_pictures = True
+save_processed_pictures = True
 
 lower_color = 0
 upper_color = 240
@@ -14,6 +25,13 @@ edge_size = 5
 final_picture_size = 100
 
 cap = cam.capture()
+
+raw_pictures_path = f"./pictures/raw/{part_number}"
+processed_pictures_path = f"./pictures/edited_{str(final_picture_size)}/{part_number}"
+
+# create directories if they don't exist
+Path(raw_pictures_path).mkdir(parents=True, exist_ok=True)
+Path(processed_pictures_path).mkdir(parents=True, exist_ok=True)
 
 
 def edit_picture(raw_picture):
@@ -95,7 +113,17 @@ while True:
     # check if picture is empty else save it
     if (new_picture := edit_picture(frame)).any():
         # save image
-        cv.imwrite("new_image.png", new_picture)
+        if save_processed_pictures:
+            cv.imwrite(processed_pictures_path + f"/{str(current_id)}.png", new_picture)
+        if save_raw_pictures:
+            cv.imwrite(raw_pictures_path + f"/{str(current_id)}.png", frame)
+
+        if save_raw_pictures or save_processed_pictures:
+            current_id += 1
+            time.sleep(time_between_pictures)
+
+            if current_id > number_of_pictures:
+                break
 
     if cv.waitKey(1) == ord('q'):
         break
