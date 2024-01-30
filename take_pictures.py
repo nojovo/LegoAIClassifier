@@ -119,6 +119,7 @@ while True:
 
         if save_raw_pictures or save_processed_pictures:
             current_id += 1
+            print(current_id)
 
             if current_id > number_of_pictures:
                 break
@@ -126,5 +127,5 @@ while True:
     if cv.waitKey(1) == ord('q'):
         break
 
-cap.release()
 cv.destroyAllWindows()
+cap.release()

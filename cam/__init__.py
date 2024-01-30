@@ -17,8 +17,8 @@ def capture():
         return windows.capture()
 
 
-def get_frame(capture):
+def get_frame(capturer):
     if os_type == "aarch64":
-        return raspb.get_frame(capture)
+        return raspb.get_frame(capturer)
     else:
-        return windows.get_frame(capture)
+        return windows.get_frame(capturer)

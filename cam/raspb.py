@@ -7,10 +7,11 @@ camera = Picamera2()
 config = camera.create_video_configuration()
 camera.configure(config)
 camera.set_controls({"Brightness": 0.2})
+camera.set_controls({"Contrast": 1.5})
 
 
 def capture():
-    capturer = Picamera2()
+    capturer = camera
     capturer.start()
     return capturer
 
