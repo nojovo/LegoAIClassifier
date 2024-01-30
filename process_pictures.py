@@ -70,11 +70,11 @@ def edit_picture(raw_picture):
         # cv.imshow("cropped", cropped_image)
 
         # resize image
-        new_image_dimensions = (final_picture_size, final_picture_size)
-        resized_image = cv.resize(cropped_image, new_image_dimensions)
-        cv.imshow("resized", resized_image)
+        # new_image_dimensions = (final_picture_size, final_picture_size)
+        # resized_image = cv.resize(cropped_image, new_image_dimensions)
+        # cv.imshow("resized", resized_image)
 
-        return resized_image
+        return cropped_image
 
     else:
         # return empty array if no part was found
