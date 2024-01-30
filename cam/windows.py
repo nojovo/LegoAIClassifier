@@ -15,8 +15,8 @@ def capture():
     return cap
 
 
-def get_frame(capture):
-    ret, frame = capture.read()
+def get_frame(capturer):
+    ret, frame = capturer.read()
     if not ret:
         print("Can't receive frame (stream end?). Exiting ...")
         exit()
