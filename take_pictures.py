@@ -1,5 +1,4 @@
 import logging
-import time
 from pathlib import Path
 import numpy as np
 import cv2 as cv
@@ -13,12 +12,11 @@ parts = ["32316", "32524", "32140", "32526", "64179", "32270", "32269", "2780", 
 part_number = parts[0]
 current_id = 1
 number_of_pictures = 10
-time_between_pictures = 0.01  # in seconds
 save_raw_pictures = False
 save_processed_pictures = False
 
 lower_color = 0
-upper_color = 180
+upper_color = 240
 noise_size = 5
 edge_size = 5
 
@@ -36,7 +34,7 @@ Path(processed_pictures_path).mkdir(parents=True, exist_ok=True)
 
 def edit_picture(raw_picture):
     gray_frame = cv.cvtColor(raw_picture, cv.COLOR_RGB2GRAY)
-    cv.imshow("grey_image", gray_frame)
+    # cv.imshow("grey_image", gray_frame)
 
     mask = cv.inRange(gray_frame, lower_color, upper_color)
     # cv.imshow("mask", mask)
@@ -121,7 +119,6 @@ while True:
 
         if save_raw_pictures or save_processed_pictures:
             current_id += 1
-            time.sleep(time_between_pictures)
 
             if current_id > number_of_pictures:
                 break
