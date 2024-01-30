@@ -3,7 +3,7 @@ import os
 import random
 import shutil
 
-test_image_number = 50
+test_image_number = 40
 
 parts = ["32316", "32140", "32270", "2780", "32073"]
 

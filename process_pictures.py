@@ -50,16 +50,18 @@ def edit_picture(raw_picture):
         new_x = round(center_x - w / 2)
         new_y = round(center_y - h / 2)
 
-        # check if picture extract with edge can be cropped else make it croppable
+        # check if picture extract with edge can be cropped else return empty
         picture_height, picture_width = gray_frame.shape
         if new_x < 0:
-            new_x = 0
+            # new_x = 0
+            return np.array([])
         if new_y < 0:
-            new_y = 0
+            # new_y = 0
+            return np.array([])
         if new_x + w > picture_width:
-            w = picture_width - new_x
+            return np.array([])
         if new_y + h > picture_height:
-            w = picture_width - new_y
+            return np.array([])
 
         rectangle_image = gray_frame.copy()
         rectangle_image = cv.rectangle(rectangle_image, (new_x, new_y), (new_x + w, new_y + h), (0, 255, 0), 2)
@@ -89,6 +91,9 @@ for part_number in parts:
     raw_pictures_path = f"./pictures/raw/{part_number}"
 
     for i in range(1, 501):
+        # if i == 45:
+        #     breakpoint()
         raw_image = cv.imread(raw_pictures_path + f"/{i}.png")
         new_image = edit_picture(raw_image)
-        cv.imwrite(processed_pictures_path + f"/{i}.png", new_image)
+        if new_image.size != 0:
+            cv.imwrite(processed_pictures_path + f"/{i}.png", new_image)
