@@ -14,7 +14,7 @@ path_to_train_folder = os.path.join(dirname, "pictures/train/")
 Path(path_to_test_folder).mkdir(parents=True, exist_ok=True)
 Path(path_to_train_folder).mkdir(parents=True, exist_ok=True)
 
-path_to_pictures = os.path.join(dirname, "pictures/edited_100/")
+path_to_pictures = os.path.join(dirname, "pictures/edited/")
 
 shutil.rmtree(path_to_test_folder)
 shutil.rmtree(path_to_train_folder)
