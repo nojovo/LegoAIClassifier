@@ -16,6 +16,9 @@ Path(path_to_train_folder).mkdir(parents=True, exist_ok=True)
 
 path_to_pictures = os.path.join(dirname, "pictures/edited_100/")
 
+shutil.rmtree(path_to_test_folder)
+shutil.rmtree(path_to_train_folder)
+
 
 for part_number in parts:
     src_path = path_to_pictures + part_number
@@ -28,8 +31,8 @@ for part_number in parts:
 
         file = random.choice(files)
         files.remove(file)
-        shutil.move(src_path + f"/{file}", test_dst_path + f"/{file}")
+        shutil.copy(src_path + f"/{file}", test_dst_path + f"/{file}")
 
     for file in files:
         Path(train_dst_path).mkdir(parents=True, exist_ok=True)
-        shutil.move(src_path + f"/{file}", train_dst_path + f"/{file}")
+        shutil.copy(src_path + f"/{file}", train_dst_path + f"/{file}")
