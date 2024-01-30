@@ -1,7 +1,12 @@
+import logging
 from platform import uname
 __all__ = []
 
 os_type = uname()[4]
+
+logging.basicConfig(level=logging.DEBUG)
+logging.debug("Current os: " + os_type)
+
 
 if os_type == "aarch64":
     from . import raspb
