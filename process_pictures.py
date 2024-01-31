@@ -31,7 +31,7 @@ def edit_picture(raw_picture):
     contour_image = cv.drawContours(contour_image, contours, -1, (0, 255, 0), 3)
     # cv.imshow("contour", contour_image)
 
-    # draw contours and crop image
+    # draw rectangle and crop image
     if len(contours) > 0:
         contour = contours[0]
         x, y, w, h = cv.boundingRect(contour)
