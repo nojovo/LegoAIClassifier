@@ -1,15 +1,24 @@
 import cam
 import keras
-import tensorflow as tf
 import cv2 as cv
 from process_pictures import edit_picture
 import numpy as np
+
+try:
+    import tensorflow as tf
+    lite_interpreter = tf.lite.Interpreter(model_path="models/model3.tflite")
+except ModuleNotFoundError:
+    print("tensorflow not found")
+    print("try using tflite_runtime...")
+    import tflite_runtime.interpreter as tflite
+    lite_interpreter = tflite.Interpreter(model_path="models/model3.tflite")
+
 
 parts = ["32316", "32140", "32270", "2780", "32073"]
 
 cap = cam.capture()
 
-lite_interpreter = tf.lite.Interpreter(model_path="models/model3.tflite")
+
 print(lite_interpreter.get_signature_list())
 classify = lite_interpreter.get_signature_runner("serving_default")
 
