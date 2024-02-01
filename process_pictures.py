@@ -10,8 +10,6 @@ upper_color = 240
 noise_size = 5
 edge_size = 5
 
-final_picture_size = 100
-
 
 def edit_picture(raw_picture):
     gray_frame = cv.cvtColor(raw_picture, cv.COLOR_RGB2GRAY)
@@ -85,7 +83,7 @@ def edit_picture(raw_picture):
 
 for part_number in parts:
     # create directories if they don't exist
-    processed_pictures_path = f"./pictures/edited_{str(final_picture_size)}/{part_number}"
+    processed_pictures_path = f"./pictures/edited/{part_number}"
     Path(processed_pictures_path).mkdir(parents=True, exist_ok=True)
 
     raw_pictures_path = f"./pictures/raw/{part_number}"
