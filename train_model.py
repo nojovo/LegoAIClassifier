@@ -12,6 +12,8 @@ parts = ["32316", "32140", "32270", "2780", "32073"]
 
 training_data_path = "./pictures/edited"
 
+# keras.utils.set_random_seed(1234)
+
 training_ds, validation_ds = keras.utils.image_dataset_from_directory(
     training_data_path,
     labels="inferred",
@@ -20,13 +22,14 @@ training_ds, validation_ds = keras.utils.image_dataset_from_directory(
     color_mode="grayscale",
     batch_size=32,
     image_size=image_size,
-    seed=1234,
+    seed=9876,
     validation_split=0.2,
     subset="both",
 )
 
 
 model = keras.Sequential([
+    keras.layers.BatchNormalization(),
     keras.layers.Conv2D(num_filters, filter_size, input_shape=image_size + (1,)),
     keras.layers.MaxPooling2D(pool_size=pool_size),
     keras.layers.Flatten(),
@@ -47,6 +50,7 @@ model.fit(training_ds,
           validation_data=validation_ds,
           callbacks=[tensorboard_callback])
 
+print("\nvalidation:")
 test_loss, test_acc = model.evaluate(validation_ds, verbose=2)
 
 print("\nTest accuracy:", test_acc)
