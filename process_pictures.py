@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 import numpy as np
 import cv2 as cv
@@ -81,17 +80,18 @@ def edit_picture(raw_picture):
         return np.array([])
 
 
-for part_number in parts:
-    # create directories if they don't exist
-    processed_pictures_path = f"./pictures/edited/{part_number}"
-    Path(processed_pictures_path).mkdir(parents=True, exist_ok=True)
+def edit_all_pictures():
+    for part_number in parts:
+        # create directories if they don't exist
+        processed_pictures_path = f"./pictures/edited/{part_number}"
+        Path(processed_pictures_path).mkdir(parents=True, exist_ok=True)
 
-    raw_pictures_path = f"./pictures/raw/{part_number}"
+        raw_pictures_path = f"./pictures/raw/{part_number}"
 
-    for i in range(1, 501):
-        # if i == 45:
-        #     breakpoint()
-        raw_image = cv.imread(raw_pictures_path + f"/{i}.png")
-        new_image = edit_picture(raw_image)
-        if new_image.size != 0:
-            cv.imwrite(processed_pictures_path + f"/{i}.png", new_image)
+        for i in range(1, 501):
+            # if i == 45:
+            #     breakpoint()
+            raw_image = cv.imread(raw_pictures_path + f"/{i}.png")
+            new_image = edit_picture(raw_image)
+            if new_image.size != 0:
+                cv.imwrite(processed_pictures_path + f"/{i}.png", new_image)
