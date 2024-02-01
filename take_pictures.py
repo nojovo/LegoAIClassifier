@@ -8,23 +8,21 @@ parts = ["32316", "32140", "32270", "2780", "32073"]
 
 part_number = parts[0]
 current_id = 1
-number_of_pictures = 10
+end_id = 10
 save_raw_pictures = True
 save_processed_pictures = False
-
-final_picture_size = 100
 
 cap = cam.capture()
 
 raw_pictures_path = f"./pictures/raw/{part_number}"
-processed_pictures_path = f"./pictures/edited_{str(final_picture_size)}/{part_number}"
+processed_pictures_path = f"./pictures/edited/{part_number}"
 
 # create directories if they don't exist
 Path(raw_pictures_path).mkdir(parents=True, exist_ok=True)
 Path(processed_pictures_path).mkdir(parents=True, exist_ok=True)
 
 
-while True:
+while current_id < end_id:
     frame = cam.get_frame(cap)
     # frame = cv.imread("test_image.png")
     # cv.imshow("raw_image", frame)
@@ -41,10 +39,7 @@ while True:
             current_id += 1
             print(current_id)
 
-            if current_id > number_of_pictures:
-                break
-
-    if cv.waitKey(1) == ord('q'):
+    if cv.waitKey(1) == ord("q"):
         break
 
 cv.destroyAllWindows()

@@ -1,12 +1,10 @@
 from pathlib import Path
 import keras
 import datetime
+import tensorflow as tf
 
 image_size = (128, 128)
 
-num_filters = 8
-filter_size = 3
-pool_size = 2
 
 parts = ["32316", "32140", "32270", "2780", "32073"]
 
@@ -29,11 +27,13 @@ training_ds, validation_ds = keras.utils.image_dataset_from_directory(
 
 
 model = keras.Sequential([
-    keras.layers.BatchNormalization(),
-    keras.layers.Conv2D(num_filters, filter_size, input_shape=image_size + (1,)),
-    keras.layers.MaxPooling2D(pool_size=pool_size),
+    keras.layers.Rescaling(1./255.),
+    keras.layers.Conv2D(32, 3, input_shape=image_size + (1,), activation="relu"),
+    keras.layers.MaxPooling2D((2, 2)),
+    keras.layers.Conv2D(16, 3, input_shape=image_size + (1,), activation="relu"),
+    keras.layers.MaxPooling2D((2, 2)),
     keras.layers.Flatten(),
-    keras.layers.Dense(5, activation="softmax")
+    keras.layers.Dense(5, activation="softmax"),
 ])
 
 
@@ -56,4 +56,8 @@ test_loss, test_acc = model.evaluate(validation_ds, verbose=2)
 print("\nTest accuracy:", test_acc)
 
 Path("models/").mkdir(parents=True, exist_ok=True)
-model.save("models/model2.keras")
+model.save("models/model3.keras")
+
+tflite_model = tf.lite.TFLiteConverter.from_keras_model(model).convert()
+with open("models/model3.tflite", "wb") as f:
+    f.write(tflite_model)
