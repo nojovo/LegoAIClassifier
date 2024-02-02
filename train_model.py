@@ -1,7 +1,6 @@
 from pathlib import Path
 import keras
 import datetime
-import tensorflow as tf
 
 image_size = (128, 128)
 
@@ -56,8 +55,8 @@ test_loss, test_acc = model.evaluate(validation_ds, verbose=2)
 print("\nTest accuracy:", test_acc)
 
 Path("models/").mkdir(parents=True, exist_ok=True)
-model.save("models/model3.keras")
+model.save("models/model4.keras")
 
-tflite_model = tf.lite.TFLiteConverter.from_keras_model(model).convert()
-with open("models/model3.tflite", "wb") as f:
-    f.write(tflite_model)
+# tflite_model = tf.lite.TFLiteConverter.from_keras_model(model).convert()
+# with open("models/model4.tflite", "wb") as f:
+#     f.write(tflite_model)

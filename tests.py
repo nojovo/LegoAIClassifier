@@ -2,13 +2,13 @@ from pathlib import Path
 from process_pictures import edit_picture
 import cv2 as cv
 
-raw_path = "./pictures/raw/2780/1.png"
-processed_pictures_path = f"./pictures/edited_100/32316/1.png"
+cap = cv.VideoCapture("rtsp://192.168.137.26:8554/cam")
 
-frame = cv.imread(raw_path)
-
-new_frame = edit_picture(frame)
-
-cv.imwrite(processed_pictures_path, new_frame)
-
-
+while cap.isOpened():
+    ret, frame = cap.read()
+    # frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    cv.imshow('frame', frame)
+    if cv.waitKey(20) & 0xFF == ord('q'):
+        break
+cap.release()
+cv.destroyAllWindows()

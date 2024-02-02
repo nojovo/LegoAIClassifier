@@ -9,7 +9,7 @@ parts = ["32316", "32140", "32270", "2780", "32073"]
 part_number = parts[0]
 current_id = 1
 end_id = 10
-save_raw_pictures = True
+save_raw_pictures = False
 save_processed_pictures = False
 
 cap = cam.capture()
