@@ -8,8 +8,8 @@ import numpy as np
 
 parts = ["32316", "32140", "32270", "2780", "32073"]
 
-# cap = cam.capture()
-cap = cv.VideoCapture("rtsp://192.168.137.26:8554/cam")
+cap = cam.capture()
+# cap = cv.VideoCapture("rtsp://192.168.137.26:8554/cam")
 
 # lite_interpreter = tf.lite.Interpreter(model_path="models/model3.tflite")
 # print(lite_interpreter.get_signature_list())
@@ -31,11 +31,12 @@ def classify_keras(input_picture):
 print("\n\n")
 
 while True:
-    # frame = cam.get_frame(cap)
-    ret, frame = cap.read()
+    frame = cam.get_frame(cap)
+    # ret, frame = cap.read()
     # frame = cv.imread("test_image.png")
 
-    if ret:
+    if True:
+    # if ret:
         if (new_picture := edit_picture(frame)).any():
             image = cv.resize(new_picture, (128, 128))
             image_array = keras.utils.img_to_array(image)

@@ -1,8 +1,9 @@
+import cv2
 from cv2 import VideoCapture
 
 
 def capture():
-    cap = VideoCapture(0)
+    cap = VideoCapture(1)
 
     if not cap.isOpened():
         print("Cannot open camera")
