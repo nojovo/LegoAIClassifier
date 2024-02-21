@@ -73,11 +73,6 @@ def edit_picture(raw_picture):
         cv.imshow("rectangle", rectangle_image)
         # cv.imshow("cropped", cropped_image)
 
-        # resize image
-        # new_image_dimensions = (final_picture_size, final_picture_size)
-        # resized_image = cv.resize(cropped_image, new_image_dimensions)
-        # cv.imshow("resized", resized_image)
-
         return cropped_image
 
     else:
@@ -94,9 +89,11 @@ def edit_all_pictures():
         raw_pictures_path = f"./pictures/raw/{part_number}"
 
         for i in range(1, 501):
-            # if i == 45:
-            #     breakpoint()
             raw_image = cv.imread(raw_pictures_path + f"/{i}.png")
             new_image = edit_picture(raw_image)
             if new_image.size != 0:
                 cv.imwrite(processed_pictures_path + f"/{i}.png", new_image)
+
+
+if __name__ == "__main__":
+    edit_all_pictures()
