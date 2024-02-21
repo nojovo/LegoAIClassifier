@@ -8,6 +8,12 @@ import numpy as np
 
 parts = ["32316", "32140", "32270", "2780", "32073"]
 
+part_pictures = {}
+for part in parts:
+    path = f"./example_pictures/{part}.jpg"
+    part_pictures[part] = cv.imread(path)
+part_pictures["0"] = cv.imread("./example_pictures/0.jpg")
+
 cap = cam.capture()
 
 # lite_interpreter = tf.lite.Interpreter(model_path="models/model3.tflite")
@@ -41,9 +47,12 @@ def main():
                 image_array = tf.expand_dims(image_array, 0)
 
                 prediction = classify_keras(image_array)
-                print(f"{parts[np.argmax(prediction)]}: {round(100 * np.max(prediction), 2)}%", end="\r")
+                predicted_part = parts[np.argmax(prediction)]
+                print(f"{predicted_part}: {round(100 * np.max(prediction), 2)}%", end="\r")
+                cv.imshow("predicted_part", part_pictures[predicted_part])
             else:
                 print("nothing found", end="\r")
+                cv.imshow("predicted_part", part_pictures["0"])
 
         if cv.waitKey(1) == ord("q"):
             break
